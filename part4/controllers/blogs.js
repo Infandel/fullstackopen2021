@@ -1,7 +1,7 @@
 const blogsRouter = require('express').Router()
-const jwt = require('jsonwebtoken')
 const Blog = require('../models/blog')
-const User = require('../models/user')
+const middleware = require('../utils/middleware')
+const mongoose = require('mongoose')
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog
@@ -9,13 +9,12 @@ blogsRouter.get('/', async (request, response) => {
   response.json(blogs)    
 })
 
-blogsRouter.post('/', async (request, response) => {
+blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
   const body = request.body
-  const decodedToken = jwt.verify(request.token, process.env.SECRET)
-  if (!request.token || !decodedToken.id) {
-    return response.status(401).json({ error: 'token missing or invalid' })
+  if (!request.token || !request.decodedToken.id) {
+    response.status(401).json({ error: 'token missing or invalid' })
   }
-  const user = await User.findById(decodedToken.id)
+  const user = request.user
 
   const blog = new Blog({
     title: body.title,
@@ -45,13 +44,30 @@ blogsRouter.get('/:id', async (request, response) => {
   }
 })
 
-blogsRouter.delete('/:id', async (request, response) => {
-  const blog = await Blog.findByIdAndRemove(request.params.id)
-  if (blog) {    
-    response.status(204).end()
+blogsRouter.delete('/:id', middleware.userExtractor, async (request, response) => {
+  if (!request.token || !request.decodedToken.id) {
+    response.status(401).json({ error: 'token is missing or invalid' })
+  }
+  if (mongoose.Types.ObjectId.isValid(request.params.id)) {
+    const blog = await Blog.findById(request.params.id)
+    const user = request.user
+    if (blog && user) {
+      const userId = user._id.toString()
+      const userIdInBlog = blog.user.toString()
+      if (userId === userIdInBlog) {
+        await Blog.findByIdAndRemove(request.params.id)
+        response.status(204).end()
+      } else {
+        response.status(401).json({ error: 'this blog does not belong to you' })
+      }
+    } else if (!user) {
+      response.status(401).json({ error: 'user is missing or invalid' })
+    } else if (!blog) {
+      response.status(404).json({ error: 'blog is missing or invalid' })
+    }  
   } else {
-    response.status(404).end()
-  }  
+    response.status(404).json({ error: 'this blog does not exist' })
+  }    
 })
 
 blogsRouter.put('/:id', async (request, response) => {
@@ -60,7 +76,7 @@ blogsRouter.put('/:id', async (request, response) => {
     title: body.title,
     author: body.author,
     url: body.url,
-    likes: body.likes
+    likes: body.likes || 0,
   }
   const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
   if (updatedBlog) {

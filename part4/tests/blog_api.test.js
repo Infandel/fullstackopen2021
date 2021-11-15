@@ -1,6 +1,7 @@
 const supertest = require('supertest')
 const mongoose = require('mongoose')
 const helper = require('./test_helper')
+const jwt = require('jsonwebtoken')
 const app = require('../app')
 const api = supertest(app)
 
@@ -10,11 +11,11 @@ beforeEach(async () => {
   await Blog.deleteMany({})
   const blogObjects = helper.initialBlogs
     .map(blog => new Blog(blog)).map(blog => blog.save())
-  await Promise.all(blogObjects)
+  await Promise.all(blogObjects)  
 })
 
 describe('addition of a new blog', () => {
-  test('succeeds with a valid data', async () => {
+  test.only('succeeds with a valid data', async () => {
     const newBlog = {
       title: "Top 3 movies of the year",
       author: "Joe Black",
@@ -24,9 +25,9 @@ describe('addition of a new blog', () => {
   
     await api
       .post('/api/blogs')
+      .set('Authorization', "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjYxOGViN2UzOWRmOGYwYmU3NWFhMjVmYSIsImlhdCI6MTYzNzAwMTI3NiwiZXhwIjoxNjM3MDExMjc2fQ.S4WLzUwCJNaGQWW25eK7QpZiDd5DbE6GUOIBo55vB-U")
       .send(newBlog)
       .expect(200)
-      .expect('Content-Type', /application\/json/)
   
     const blogsAtEnd = await helper.blogsInDb()
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)

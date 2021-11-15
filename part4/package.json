@@ -8,7 +8,8 @@
     "dev": "cross-env NODE_ENV=development nodemon index.js",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
     "watch": "cross-env NODE_ENV=test jest --watch --runInBand",
-    "userTest": "cross-env NODE_ENV=test jest --verbose --runInBand -- tests/user_api.test.js"
+    "userTest": "cross-env NODE_ENV=test jest --verbose --runInBand -- tests/user_api.test.js",
+    "blogTest": "cross-env NODE_ENV=test jest --verbose --runInBand -- tests/blog_api.test.js"
   },
   "keywords": [
     "Blog"
