@@ -1,0 +1,50 @@
+h1 {
+  color: green;
+  font-style: italic;
+}
+
+.blog {
+  color: grey;
+  padding-top: 3px;
+  font-size: 15px;
+}
+
+.user {
+  border-color:rgb(0, 0, 0);
+  border-style: solid;
+  border-width: 2px;
+  display: inline-block;
+  padding: 10px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-style: italic;
+  font-size: 1.3rem;
+  font-weight: 500;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.button {
+  border-color:rgb(0, 0, 0);
+  font-size: 1rem;
+  padding: 5px 15px;
+  border-radius: 5px;
+  margin: 10px 0px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: rgba(0, 200, 150, 0.6);
+  opacity: 0.7;
+}
+
+.error {
+  color: red;
+  text-align: center;
+  background: lightgrey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 15px 0px;
+}
