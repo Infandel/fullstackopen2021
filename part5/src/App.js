@@ -7,13 +7,13 @@ import Notification from './components/Notification'
 import Footer from './components/Footer'
 import Togglable from './components/Togglable'
 import loginService from './services/login'
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [errorMessage, setErrorMessage] = useState(null)
-  const [username, setUsername] = useState('') 
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
@@ -21,8 +21,8 @@ const App = () => {
     blogService
       .getAll()
       .then(blogs =>
-      setBlogs( blogs )
-    )  
+        setBlogs( blogs )
+      )
   }, [])
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const App = () => {
       setUser(user)
       blogService.setToken(user.token)
     }
-  }, [])  
+  }, [])
 
   const logOut = () => {
     setUser(null)
@@ -63,7 +63,7 @@ const App = () => {
 
   if (user === null) {
     return (
-      <>        
+      <>
         <h1>Log in to application</h1>
         <Notification message={errorMessage} />
         <LoginForm
@@ -84,13 +84,13 @@ const App = () => {
       </div>
       <div>
         <button className="button" onClick={logOut}>Log out</button>
-      </div>           
+      </div>
       <Notification message={errorMessage} />
       <ToastContainer position="top-right"
-        autoClose={5000} 
-        hideProgressBar={false} 
-        newestOnTop={false} 
-        closeOnClick rtl={false} 
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick rtl={false}
         pauseOnFocusLoss draggable pauseOnHover />
       <Togglable buttonLabel='Create new Blog'>
         <BlogForm
@@ -105,7 +105,7 @@ const App = () => {
           <Blog
             key={blog.id}
             userId={user.id}
-            blog={blog}            
+            blog={blog}
             setBlogs={setBlogs}
             blogs={blogs}
             setErrorMessage={setErrorMessage}

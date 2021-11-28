@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import blogService from '../services/blogs';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react'
+import blogService from '../services/blogs'
+import PropTypes from 'prop-types'
 
 const Blog = ({ blog, setBlogs, blogs, userId, setErrorMessage }) => {
 
@@ -14,14 +14,13 @@ const Blog = ({ blog, setBlogs, blogs, userId, setErrorMessage }) => {
     boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
     fontFamily: 'Arial, Helvetica, sans-serif',
   }
-  
   const [visible, setVisible] = useState(false)
 
   const hideWhenVisible = { display: visible ? 'none' : '' }
   const showWhenVisible = { display: visible ? '' : 'none' }
   // Comparing the IDs of creator and current user to display
   // remove button
-  const isRemovable = { display: userId === blog.user.id ? '' : 'none'}
+  const isRemovable = { display: userId === blog.user.id ? '' : 'none' }
 
   const toggleVisibility = () => {
     setVisible(!visible)
@@ -40,20 +39,20 @@ const Blog = ({ blog, setBlogs, blogs, userId, setErrorMessage }) => {
     }
     blogService
       .update(blogId, blogObject)
-        .then(returnedBlog => {
-          setBlogs(blogs.map(blog => blog.id !== chosenBlog.id ? blog : returnedBlog))
-        })
-        .catch(e => {
-          setErrorMessage('Something wrong with updating the blog')
-          setTimeout(() => {
-            setErrorMessage(null)
-          }, 5000)
-        })   
+      .then(returnedBlog => {
+        setBlogs(blogs.map(blog => blog.id !== chosenBlog.id ? blog : returnedBlog))
+      })
+      .catch(e => {
+        setErrorMessage('Something wrong with updating the blog')
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      })
   }
 
   const removeBlog = () => {
     const blogId = blog.id
-    if (window.confirm(`Do you want to remove blog ${blog.title} by ${blog.author} ?`)) {  
+    if (window.confirm(`Do you want to remove blog ${blog.title} by ${blog.author} ?`)) {
       blogService
         .remove(blogId)
         .then(
@@ -64,7 +63,7 @@ const Blog = ({ blog, setBlogs, blogs, userId, setErrorMessage }) => {
           setTimeout(() => {
             setErrorMessage(null)
           }, 5000)
-        }) 
+        })
     }
   }
 
@@ -81,7 +80,7 @@ const Blog = ({ blog, setBlogs, blogs, userId, setErrorMessage }) => {
           {blog.title} by {blog.author}
           <button onClick={toggleVisibility} className="button small">Hide</button>
         </div>
-        <div>{blog.url}</div>      
+        <div>{blog.url}</div>
         <div>
           {blog.likes}
           <button onClick={increaseLike} className="button small">Like</button>
@@ -91,7 +90,7 @@ const Blog = ({ blog, setBlogs, blogs, userId, setErrorMessage }) => {
           <button onClick={removeBlog} className="button small danger">Remove</button>
         </div>
       </div>
-    </div> 
+    </div>
   )
 }
 

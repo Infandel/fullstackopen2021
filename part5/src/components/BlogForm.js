@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { toast } from 'react-toastify';
-import blogService from '../services/blogs';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react'
+import { toast } from 'react-toastify'
+import blogService from '../services/blogs'
+import PropTypes from 'prop-types'
 
-const BlogForm = ({ 
+const BlogForm = ({
   setBlogs, blogs, setErrorMessage, toggleVisibility
 }) => {
 
@@ -23,7 +23,7 @@ const BlogForm = ({
     setNewURL(event.target.value)
   }
 
-  const notify = (title, author) => toast(`A new blog ${title}! by ${author} added`);
+  const notify = (title, author) => toast(`A new blog ${title}! by ${author} added`)
 
   const addBlog = (event) => {
     event.preventDefault()
@@ -34,35 +34,35 @@ const BlogForm = ({
     }
     blogService
       .create(blogObject)
-        .then(returnedBlog => {
-          setBlogs(blogs.concat(returnedBlog))
-          setNewTitle('')
-          setNewAuthor('')
-          setNewURL('')
-          notify(returnedBlog.title, returnedBlog.author)
-        })
-        .catch(e => {
-          setErrorMessage('Something wrong with input')
-          setTimeout(() => {
-            setErrorMessage(null)
-          }, 5000)
-        })   
+      .then(returnedBlog => {
+        setBlogs(blogs.concat(returnedBlog))
+        setNewTitle('')
+        setNewAuthor('')
+        setNewURL('')
+        notify(returnedBlog.title, returnedBlog.author)
+      })
+      .catch(e => {
+        setErrorMessage('Something wrong with input')
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      })
   }
   return (
     <>
       <h1>Create new Blog</h1>
       <form onSubmit={addBlog}>
         <div>
-          <label>Title</label>          
-          <input value={newTitle} type="text" onChange={handleTitleChange} />          
+          <label>Title</label>
+          <input value={newTitle} type="text" onChange={handleTitleChange} />
         </div>
         <div>
-          <label>Author</label>         
-          <input value={newAuthor} type="text" onChange={handleAuthorChange} />          
+          <label>Author</label>
+          <input value={newAuthor} type="text" onChange={handleAuthorChange} />
         </div>
         <div>
           <label>URL</label>
-          <input value={newURL} type="text" onChange={handleURLChange} />          
+          <input value={newURL} type="text" onChange={handleURLChange} />
         </div>
         <button type="submit" onClick={toggleVisibility} className="button">Create</button>
       </form>

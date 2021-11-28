@@ -2,18 +2,18 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 const LoginForm = ({
-   handleSubmit,
-   handleUsernameChange,
-   handlePasswordChange,
-   username,
-   password
-  }) => {
+  handleSubmit,
+  handleUsernameChange,
+  handlePasswordChange,
+  username,
+  password
+}) => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
         <div>
           username
-            <input
+          <input
             type="text"
             value={username}
             onChange={handleUsernameChange}
@@ -21,7 +21,7 @@ const LoginForm = ({
         </div>
         <div>
           password
-            <input
+          <input
             type="password"
             value={password}
             onChange={handlePasswordChange}
