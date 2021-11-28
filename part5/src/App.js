@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
+import LoginForm from './components/LoginForm'
 import blogService from './services/blogs'
 import Notification from './components/Notification'
 import Footer from './components/Footer'
@@ -65,27 +66,13 @@ const App = () => {
       <>        
         <h1>Log in to application</h1>
         <Notification message={errorMessage} />
-        <form onSubmit={handleLogin}>
-          <div>
-            username
-              <input
-              type="text"
-              value={username}
-              name="Username"
-              onChange={({ target }) => setUsername(target.value)}
-            />
-          </div>
-          <div>
-            password
-              <input
-              type="password"
-              value={password}
-              name="Password"
-              onChange={({ target }) => setPassword(target.value)}
-            />
-          </div>
-          <button type="submit" className="button">login</button>
-        </form>
+        <LoginForm
+          username={username}
+          password={password}
+          handleUsernameChange={({ target }) => setUsername(target.value)}
+          handlePasswordChange={({ target }) => setPassword(target.value)}
+          handleSubmit={handleLogin}
+        />
       </>
     )
   }
@@ -113,11 +100,18 @@ const App = () => {
         />
       </Togglable>
       <h1>Blogs</h1>
-      <ul>
-        {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
+      <ul className="blogs">
+        {blogs.sort((prevBlog, nextBlog) => nextBlog.likes - prevBlog.likes).map(blog =>
+          <Blog
+            key={blog.id}
+            userId={user.id}
+            blog={blog}            
+            setBlogs={setBlogs}
+            blogs={blogs}
+            setErrorMessage={setErrorMessage}
+          />
         )}
-      </ul>  
+      </ul>
       <Footer />
     </>
   )

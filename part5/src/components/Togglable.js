@@ -16,7 +16,7 @@ const Togglable = (props) => {
         <button onClick={toggleVisibility} className="button">{props.buttonLabel}</button>
       </div>
       <div style={showWhenVisible}>
-        {props.children}
+        {React.cloneElement(props.children, { toggleVisibility })}
         <button onClick={toggleVisibility} className="button">cancel</button>
       </div>
     </div>

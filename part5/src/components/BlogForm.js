@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { toast } from 'react-toastify';
-import blogService from '../services/blogs'
+import blogService from '../services/blogs';
+import PropTypes from 'prop-types';
 
 const BlogForm = ({ 
-  setBlogs, blogs, setErrorMessage, 
+  setBlogs, blogs, setErrorMessage, toggleVisibility
 }) => {
 
   const [newTitle, setNewTitle] = useState('')
@@ -63,10 +64,17 @@ const BlogForm = ({
           <label>URL</label>
           <input value={newURL} type="text" onChange={handleURLChange} />          
         </div>
-        <button type="submit" className="button">Create</button>
+        <button type="submit" onClick={toggleVisibility} className="button">Create</button>
       </form>
     </>
   )
+}
+
+BlogForm.propTypes = {
+  setBlogs: PropTypes.func.isRequired,
+  blogs: PropTypes.array.isRequired,
+  setErrorMessage: PropTypes.func.isRequired,
+  toggleVisibility: PropTypes.func,
 }
 
 export default BlogForm

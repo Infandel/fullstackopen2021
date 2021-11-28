@@ -21,7 +21,7 @@ blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
     author: body.author,
     url: body.url,
     likes: body.likes || 0,
-    user: user._id
+    user: user._id,
   })
 
   if (!body.url && !body.title) {
@@ -30,8 +30,8 @@ blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
     const savedBlog = await blog.save()
     user.blogs = user.blogs.concat(savedBlog._id)
     await user.save()
-
-    response.json(savedBlog)
+    const blogWithNestedUser = await Blog.findById(savedBlog._id).populate('user')
+    response.json(blogWithNestedUser)
   }  
 })
 
@@ -70,15 +70,18 @@ blogsRouter.delete('/:id', middleware.userExtractor, async (request, response) =
   }    
 })
 
-blogsRouter.put('/:id', async (request, response) => {
+blogsRouter.put('/:id', middleware.userExtractor, async (request, response) => {
   const body = request.body
-  const blog = {
-    title: body.title,
-    author: body.author,
-    url: body.url,
-    likes: body.likes || 0,
+
+  if (!request.token || !request.decodedToken.id) {
+    response.status(401).json({ error: 'token missing or invalid' })
   }
-  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
+  
+  const blog =  {
+    likes: body.likes || 0,
+    user: body.user
+  }
+  const updatedBlog = await (await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })).populate('user')
   if (updatedBlog) {
     response.json(updatedBlog)
   } else {
