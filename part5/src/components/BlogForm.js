@@ -41,7 +41,7 @@ const BlogForm = ({
         setNewURL('')
         notify(returnedBlog.title, returnedBlog.author)
       })
-      .catch(e => {
+      .catch(() => {
         setErrorMessage('Something wrong with input')
         setTimeout(() => {
           setErrorMessage(null)

@@ -42,7 +42,7 @@ const Blog = ({ blog, setBlogs, blogs, userId, setErrorMessage }) => {
       .then(returnedBlog => {
         setBlogs(blogs.map(blog => blog.id !== chosenBlog.id ? blog : returnedBlog))
       })
-      .catch(e => {
+      .catch(() => {
         setErrorMessage('Something wrong with updating the blog')
         setTimeout(() => {
           setErrorMessage(null)
@@ -58,7 +58,7 @@ const Blog = ({ blog, setBlogs, blogs, userId, setErrorMessage }) => {
         .then(
           setBlogs(blogs.filter(blog => blog.id !== blogId))
         )
-        .catch(e => {
+        .catch(() => {
           setErrorMessage('Something wrong with deleting the blog')
           setTimeout(() => {
             setErrorMessage(null)
@@ -68,14 +68,12 @@ const Blog = ({ blog, setBlogs, blogs, userId, setErrorMessage }) => {
   }
 
   return (
-    <div style={blogStyle}>
-      <div style={hideWhenVisible}>
-        <div>
-          {blog.title} by {blog.author}
-          <button onClick={toggleVisibility} className="button small">View</button>
-        </div>
+    <li style={blogStyle} className="blog">
+      <div style={hideWhenVisible} className="initialBlog">
+        {blog.title} by {blog.author}
+        <button onClick={toggleVisibility} className="button small">View</button>
       </div>
-      <div style={showWhenVisible}>
+      <div style={showWhenVisible} className="expandedBlog">
         <div>
           {blog.title} by {blog.author}
           <button onClick={toggleVisibility} className="button small">Hide</button>
@@ -90,16 +88,16 @@ const Blog = ({ blog, setBlogs, blogs, userId, setErrorMessage }) => {
           <button onClick={removeBlog} className="button small danger">Remove</button>
         </div>
       </div>
-    </div>
+    </li>
   )
 }
 
-Blog.propTypes = {
-  setBlogs: PropTypes.func.isRequired,
-  blogs: PropTypes.array.isRequired,
-  setErrorMessage: PropTypes.func.isRequired,
-  blog: PropTypes.object.isRequired,
-  userId: PropTypes.string.isRequired
-}
+// Blog.propTypes = {
+//   setBlogs: PropTypes.func.isRequired,
+//   blogs: PropTypes.array.isRequired,
+//   setErrorMessage: PropTypes.func.isRequired,
+//   blog: PropTypes.object,
+//   userId: PropTypes.string.isRequired
+// }
 
 export default Blog
