@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import blogService from '../services/blogs'
 import PropTypes from 'prop-types'
 
-const Blog = ({ blog, setBlogs, blogs, userId, setErrorMessage }) => {
+const Blog = ({ blog, setBlogs, blogs, userId, setErrorMessage, onLikeClick }) => {
 
   const blogStyle = {
     padding: '10px',
@@ -27,6 +27,7 @@ const Blog = ({ blog, setBlogs, blogs, userId, setErrorMessage }) => {
   }
 
   const increaseLike = (event) => {
+    onLikeClick()
     event.preventDefault()
     const blogId = blog.id
     const chosenBlog = blogs.find(blog => blog.id === blogId)

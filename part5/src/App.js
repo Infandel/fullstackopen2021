@@ -61,6 +61,14 @@ const App = () => {
     }
   }
 
+  const handleLike = () => {
+    console.log('toasty')
+  }
+
+  const onSubmit = () => {
+    console.log('submitted')
+  }
+
   if (user === null) {
     return (
       <>
@@ -97,6 +105,7 @@ const App = () => {
           setBlogs={setBlogs}
           blogs={blogs}
           setErrorMessage={setErrorMessage}
+          onSubmit={onSubmit}
         />
       </Togglable>
       <h1>Blogs</h1>
@@ -109,6 +118,7 @@ const App = () => {
             setBlogs={setBlogs}
             blogs={blogs}
             setErrorMessage={setErrorMessage}
+            onLikeClick={handleLike}
           />
         )}
       </ul>

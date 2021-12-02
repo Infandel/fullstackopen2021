@@ -11,6 +11,7 @@ describe('<Blog />', () => {
     title: 'The Adventure',
     author: 'Dwayne Rock Johnson',
     url: 'www.jes.jp',
+    likes: 0,
     user: {
       id: '2828ahhap2228s',
       name: 'Johhny',
@@ -42,17 +43,19 @@ describe('<Blog />', () => {
     username: 'root'
   }
 
-  const mockHandler = jest.fn()
-  const mockHandler2 = jest.fn()
+  const setBlogs = jest.fn()
+  const setError = jest.fn()
+  const handleLike = jest.fn()
 
   beforeEach(() => {
     component = render(
       <Blog
         userId={user.id}
         blog={blog}
-        setBlogs={mockHandler}
+        setBlogs={setBlogs}
         blogs={blogs}
-        setErrorMessage={mockHandler2}
+        setErrorMessage={setError}
+        onLikeClick={handleLike}
       />
     )
   })
@@ -74,12 +77,22 @@ describe('<Blog />', () => {
     const button = component.getByText('View')
     fireEvent.click(button)
 
-    console.log(prettyDOM(expandedDiv))
-
     expect(shrinkedDiv).toHaveStyle('display: none')
     expect(expandedDiv).not.toHaveStyle('display: none')
     expect(expandedDiv).toHaveTextContent('www.jes.jp')
     expect(expandedDiv).toHaveTextContent('Like')
+  })
+
+  test('that if like button is clicked twice event handler is called twice', () => {
+
+    const viewButton = component.getByText('View')
+    fireEvent.click(viewButton)
+
+    const likeButton = component.getByText('Like')
+    fireEvent.click(likeButton)
+    fireEvent.click(likeButton)
+
+    expect(handleLike).toHaveBeenCalledTimes(2)
   })
 })
 

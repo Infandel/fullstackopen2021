@@ -4,7 +4,7 @@ import blogService from '../services/blogs'
 import PropTypes from 'prop-types'
 
 const BlogForm = ({
-  setBlogs, blogs, setErrorMessage, toggleVisibility
+  setBlogs, blogs, setErrorMessage, toggleVisibility, onSubmit
 }) => {
 
   const [newTitle, setNewTitle] = useState('')
@@ -32,6 +32,7 @@ const BlogForm = ({
       author: newAuthor,
       url: newURL,
     }
+    onSubmit(blogObject)
     blogService
       .create(blogObject)
       .then(returnedBlog => {
@@ -51,18 +52,18 @@ const BlogForm = ({
   return (
     <>
       <h1>Create new Blog</h1>
-      <form onSubmit={addBlog}>
+      <form onSubmit={addBlog} data-testid="form">
         <div>
           <label>Title</label>
-          <input value={newTitle} type="text" onChange={handleTitleChange} />
+          <input data-testid='title' value={newTitle} type="text" onChange={handleTitleChange} />
         </div>
         <div>
           <label>Author</label>
-          <input value={newAuthor} type="text" onChange={handleAuthorChange} />
+          <input data-testid='author' value={newAuthor} type="text" onChange={handleAuthorChange} />
         </div>
         <div>
           <label>URL</label>
-          <input value={newURL} type="text" onChange={handleURLChange} />
+          <input data-testid='url' value={newURL} type="text" onChange={handleURLChange} />
         </div>
         <button type="submit" onClick={toggleVisibility} className="button">Create</button>
       </form>
