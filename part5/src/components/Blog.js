@@ -93,12 +93,12 @@ const Blog = ({ blog, setBlogs, blogs, userId, setErrorMessage, onLikeClick }) =
   )
 }
 
-// Blog.propTypes = {
-//   setBlogs: PropTypes.func.isRequired,
-//   blogs: PropTypes.array.isRequired,
-//   setErrorMessage: PropTypes.func.isRequired,
-//   blog: PropTypes.object,
-//   userId: PropTypes.string.isRequired
-// }
+Blog.propTypes = {
+  setBlogs: PropTypes.func.isRequired,
+  blogs: PropTypes.array.isRequired,
+  setErrorMessage: PropTypes.func.isRequired,
+  blog: PropTypes.object,
+  userId: PropTypes.string.isRequired
+}
 
 export default Blog
