@@ -65,7 +65,7 @@ const BlogForm = ({
           <label>URL</label>
           <input data-testid='url' value={newURL} type="text" onChange={handleURLChange} />
         </div>
-        <button type="submit" onClick={toggleVisibility} className="button">Create</button>
+        <button data-testid='create' type="submit" onClick={toggleVisibility} className="button">Create</button>
       </form>
     </>
   )
