@@ -13,7 +13,7 @@ const notificationReducer = (state = initialState, action) => {
     case 'SET_NOTIFICATION':
       return {
         ...state,
-        message: action.message,
+        message: action.data.message,
         style: {
           ...state.style,
           display: ''}
@@ -25,16 +25,16 @@ const notificationReducer = (state = initialState, action) => {
   }
 }
 
-export const showNotification = message => {
-  return {
-    type: 'SET_NOTIFICATION',
-    message: message,
-  }
-}
-
-export const removeNotification = () => {
-  return {
-    type: 'REMOVE_NOTIFICATION'
+export const showNotification = (message, delay) => {
+  return async dispatch => {
+    const timer = 1000 * delay
+    dispatch({
+      type: 'SET_NOTIFICATION',
+      data: { message }
+    })
+    setTimeout(() => dispatch({
+      type: 'REMOVE_NOTIFICATION'
+    }), timer)
   }
 }
 
