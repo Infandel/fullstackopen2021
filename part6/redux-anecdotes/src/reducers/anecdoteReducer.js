@@ -3,7 +3,7 @@ import anecdoteService from '../services/anecdote'
 const anecdoteReducer = (state = [], action) => {
   switch (action.type) {
     case 'VOTE':
-      return [...state].map(anecdote =>
+      return state.map(anecdote =>
         anecdote.id !== action.data.id ? anecdote : action.data.updatedAnecdote)
         //Sorting anecdotes by voting property in desc order
           .sort((prevAnec, curAnec) => curAnec.votes - prevAnec.votes)
