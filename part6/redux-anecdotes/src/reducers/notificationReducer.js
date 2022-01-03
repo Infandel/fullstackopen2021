@@ -8,6 +8,8 @@ const initialState = {
   }
 }
 
+let timeoutID // variable for prolonging notification timeout
+
 const notificationReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'SET_NOTIFICATION':
@@ -25,7 +27,6 @@ const notificationReducer = (state = initialState, action) => {
   }
 }
 
-let timeoutID
 export const showNotification = (message, delay) => {
   return async dispatch => {
     const timer = 1000 * delay
