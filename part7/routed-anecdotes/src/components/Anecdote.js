@@ -1,18 +1,18 @@
 import React from 'react';
-import {
-  useParams
-} from "react-router-dom"
 
-const Anecdote = ({ anecdotes }) => {
-  const id = useParams().id
-  const anecdote = anecdotes.find(n => n.id === id)
+const Anecdote = ({ anecdote, vote }) => {
+  // const id = useParams().id
+  // const anecdote = anecdotes.find(n => n.id === id)
   return (
     <div>
       <h2>{anecdote.content} by {anecdote.author}</h2>
-      <div>has {anecdote.votes} votes</div>
-      <br />
-      <div>for more info see <a href={anecdote.info}>{anecdote.info}</a></div>
-      <br />
+      <p>
+        has {anecdote.votes} {anecdote.votes === 1 ? "vote" : "votes"}
+        <button style={{ marginLeft: 5 }} onClick={() => vote(anecdote.id)}>
+          vote
+        </button>
+      </p>
+      <p>for more info see <a href={anecdote.info}>{anecdote.info}</a></p>
     </div>
   )
 }
