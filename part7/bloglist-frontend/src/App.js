@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
@@ -9,6 +10,7 @@ import Togglable from './components/Togglable'
 import loginService from './services/login'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { showNotification } from './reducers/notificationReducer'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -16,6 +18,7 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     blogService
@@ -54,17 +57,18 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('Wrong username or password')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      dispatch(showNotification('Wrong username or password', 5))
+      // setErrorMessage('Wrong username or password')
+      // setTimeout(() => {
+      //   setErrorMessage(null)
+      // }, 5000)
     }
   }
-
+  //for testing purposes
   const handleLike = () => {
     console.log('toasty')
   }
-
+  //for testing purposes
   const onSubmit = () => {
     console.log('submitted')
   }
@@ -73,7 +77,7 @@ const App = () => {
     return (
       <>
         <h1>Log in to application</h1>
-        <Notification message={errorMessage} />
+        <Notification />
         <LoginForm
           username={username}
           password={password}
@@ -94,12 +98,14 @@ const App = () => {
         <button className="button" onClick={logOut}>Log out</button>
       </div>
       <Notification message={errorMessage} />
+      {/* <Notification /> */}
       <ToastContainer position="top-right"
         autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick rtl={false}
-        pauseOnFocusLoss draggable pauseOnHover />
+        pauseOnFocusLoss draggable pauseOnHover
+      />
       <Togglable buttonLabel='Create new Blog'>
         <BlogForm
           setBlogs={setBlogs}
