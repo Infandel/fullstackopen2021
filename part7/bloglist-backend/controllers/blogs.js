@@ -6,7 +6,7 @@ const mongoose = require('mongoose')
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog
     .find({}).populate('user', { username: 1, name: 1 })
-  response.json(blogs)    
+  response.json(blogs)
 })
 
 blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
@@ -32,7 +32,7 @@ blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
     await user.save()
     const blogWithNestedUser = await Blog.findById(savedBlog._id).populate('user')
     response.json(blogWithNestedUser)
-  }  
+  }
 })
 
 blogsRouter.get('/:id', async (request, response) => {
@@ -64,10 +64,10 @@ blogsRouter.delete('/:id', middleware.userExtractor, async (request, response) =
       response.status(401).json({ error: 'user is missing or invalid' })
     } else if (!blog) {
       response.status(404).json({ error: 'blog is missing or invalid' })
-    }  
+    }
   } else {
     response.status(404).json({ error: 'this blog does not exist' })
-  }    
+  }
 })
 
 blogsRouter.put('/:id', middleware.userExtractor, async (request, response) => {
@@ -76,7 +76,7 @@ blogsRouter.put('/:id', middleware.userExtractor, async (request, response) => {
   if (!request.token || !request.decodedToken.id) {
     response.status(401).json({ error: 'token missing or invalid' })
   }
-  
+
   const blog =  {
     likes: body.likes || 0,
     user: body.user

@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import blogService from '../services/blogs'
+import { useDispatch, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
+import { makingLike, deleteBlog } from '../reducers/blogReducer'
 
-const Blog = ({ blog, setBlogs, blogs, userId, setErrorMessage, onLikeClick }) => {
+const Blog = ({ blog, blogs, onLikeClick }) => {
 
   const blogStyle = {
     padding: '10px',
@@ -14,13 +15,17 @@ const Blog = ({ blog, setBlogs, blogs, userId, setErrorMessage, onLikeClick }) =
     boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
     fontFamily: 'Arial, Helvetica, sans-serif',
   }
+
   const [visible, setVisible] = useState(false)
+  const dispatch = useDispatch()
+  const user = useSelector(state => state.user)
+  console.log(user)
 
   const hideWhenVisible = { display: visible ? 'none' : '' }
   const showWhenVisible = { display: visible ? '' : 'none' }
   // Comparing the IDs of creator and current user to display
   // remove button
-  const isRemovable = { display: userId === blog.user.id ? '' : 'none' }
+  const isRemovable = { display: user.id === blog.user.id ? '' : 'none' }
 
   const toggleVisibility = () => {
     setVisible(!visible)
@@ -29,42 +34,12 @@ const Blog = ({ blog, setBlogs, blogs, userId, setErrorMessage, onLikeClick }) =
   const increaseLike = (event) => {
     onLikeClick()
     event.preventDefault()
-    const blogId = blog.id
-    const chosenBlog = blogs.find(blog => blog.id === blogId)
-    const blogObject = {
-      user: blog.user.id,
-      title: blog.title,
-      author: blog.author,
-      url: blog.url,
-      likes: blog.likes + 1,
-    }
-    blogService
-      .update(blogId, blogObject)
-      .then(returnedBlog => {
-        setBlogs(blogs.map(blog => blog.id !== chosenBlog.id ? blog : returnedBlog))
-      })
-      .catch(() => {
-        setErrorMessage('Something wrong with updating the blog')
-        setTimeout(() => {
-          setErrorMessage(null)
-        }, 5000)
-      })
+    dispatch(makingLike(blog.id, blogs))
   }
 
   const removeBlog = () => {
-    const blogId = blog.id
     if (window.confirm(`Do you want to remove blog ${blog.title} by ${blog.author} ?`)) {
-      blogService
-        .remove(blogId)
-        .then(
-          setBlogs(blogs.filter(blog => blog.id !== blogId))
-        )
-        .catch(() => {
-          setErrorMessage('Something wrong with deleting the blog')
-          setTimeout(() => {
-            setErrorMessage(null)
-          }, 5000)
-        })
+      dispatch(deleteBlog(blog.id))
     }
   }
 
@@ -94,11 +69,9 @@ const Blog = ({ blog, setBlogs, blogs, userId, setErrorMessage, onLikeClick }) =
 }
 
 Blog.propTypes = {
-  setBlogs: PropTypes.func.isRequired,
   blogs: PropTypes.array.isRequired,
-  setErrorMessage: PropTypes.func.isRequired,
   blog: PropTypes.object,
-  userId: PropTypes.string.isRequired
+  // userId: PropTypes.string.isRequired
 }
 
 export default Blog

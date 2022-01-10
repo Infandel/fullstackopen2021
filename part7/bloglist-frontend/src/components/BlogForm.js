@@ -1,15 +1,14 @@
 import React, { useState } from 'react'
-import { toast } from 'react-toastify'
-import blogService from '../services/blogs'
+import { useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
+import { createBlog } from '../reducers/blogReducer'
 
-const BlogForm = ({
-  setBlogs, blogs, setErrorMessage, toggleVisibility, onSubmit
-}) => {
+const BlogForm = ({ toggleVisibility, onSubmit }) => {
 
   const [newTitle, setNewTitle] = useState('')
   const [newAuthor, setNewAuthor] = useState('')
   const [newURL, setNewURL] = useState('')
+  const dispatch = useDispatch()
 
   const handleTitleChange = (event) => {
     setNewTitle(event.target.value)
@@ -23,8 +22,6 @@ const BlogForm = ({
     setNewURL(event.target.value)
   }
 
-  const notify = (title, author) => toast(`A new blog ${title}! by ${author} added`)
-
   const addBlog = (event) => {
     event.preventDefault()
     const blogObject = {
@@ -33,21 +30,12 @@ const BlogForm = ({
       url: newURL,
     }
     onSubmit(blogObject)
-    blogService
-      .create(blogObject)
-      .then(returnedBlog => {
-        setBlogs(blogs.concat(returnedBlog))
-        setNewTitle('')
-        setNewAuthor('')
-        setNewURL('')
-        notify(returnedBlog.title, returnedBlog.author)
-      })
-      .catch(() => {
-        setErrorMessage('Something wrong with input')
-        setTimeout(() => {
-          setErrorMessage(null)
-        }, 5000)
-      })
+    if (blogObject.newTitle.length > 5) {
+      dispatch(createBlog(blogObject))
+    }
+    setNewTitle('')
+    setNewAuthor('')
+    setNewURL('')
   }
   return (
     <>
@@ -72,9 +60,6 @@ const BlogForm = ({
 }
 
 BlogForm.propTypes = {
-  setBlogs: PropTypes.func.isRequired,
-  blogs: PropTypes.array.isRequired,
-  setErrorMessage: PropTypes.func.isRequired,
   toggleVisibility: PropTypes.func,
 }
 

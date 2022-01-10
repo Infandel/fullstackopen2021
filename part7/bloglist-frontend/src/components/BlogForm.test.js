@@ -25,7 +25,6 @@ describe('<BlogForm /> ', () => {
   ]
 
   const setBlogs = jest.fn()
-  const setErrorMessage = jest.fn()
   const toggleVisibility = jest.fn()
   const handleSubmit = jest.fn()
 
@@ -34,7 +33,6 @@ describe('<BlogForm /> ', () => {
       <BlogForm
         setBlogs={setBlogs}
         blogs={blogs}
-        setErrorMessage={setErrorMessage}
         toggleVisibility={toggleVisibility}
         onSubmit={handleSubmit}
       />

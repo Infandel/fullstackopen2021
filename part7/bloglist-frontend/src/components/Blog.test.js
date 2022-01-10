@@ -44,7 +44,6 @@ describe('<Blog />', () => {
   }
 
   const setBlogs = jest.fn()
-  const setError = jest.fn()
   const handleLike = jest.fn()
 
   beforeEach(() => {
@@ -54,7 +53,6 @@ describe('<Blog />', () => {
         blog={blog}
         setBlogs={setBlogs}
         blogs={blogs}
-        setErrorMessage={setError}
         onLikeClick={handleLike}
       />
     )

@@ -1,67 +1,47 @@
 import React, { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-import Blog from './components/Blog'
+import { useDispatch, useSelector } from 'react-redux'
+import { initializeBlogs } from './reducers/blogReducer'
+import { login, logout } from './reducers/signedReducer'
+import BlogList from './components/BlogList'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
-import blogService from './services/blogs'
 import Notification from './components/Notification'
 import Footer from './components/Footer'
 import Togglable from './components/Togglable'
-import loginService from './services/login'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { showNotification } from './reducers/notificationReducer'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
-  const [errorMessage, setErrorMessage] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
   const dispatch = useDispatch()
+  const user = useSelector(state => state.user)
 
   useEffect(() => {
-    blogService
-      .getAll()
-      .then(blogs =>
-        setBlogs( blogs )
-      )
-  }, [])
+    dispatch(initializeBlogs())
+  }, [dispatch])
 
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
-    }
-  }, [])
+  // useEffect(() => {
+  //   const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
+  //   if (loggedUserJSON) {
+  //     const user = JSON.parse(loggedUserJSON)
+  //     setUser(user)
+  //     blogService.setToken(user.token)
+  //   }
+  // }, [])
 
   const logOut = () => {
-    setUser(null)
-    window.localStorage.removeItem('loggedBlogappUser')
+    dispatch(logout())
   }
 
-  const handleLogin = async (event) => {
-    event.preventDefault()
-
+  const handleLogin = (event) => {
     try {
-      const user = await loginService.login({
-        username, password,
-      })
-      window.localStorage.setItem(
-        'loggedBlogappUser', JSON.stringify(user)
-      )
-      blogService.setToken(user.token)
-      setUser(user)
+      event.preventDefault()
+      dispatch(login(username, password))
       setUsername('')
       setPassword('')
     } catch (exception) {
-      dispatch(showNotification('Wrong username or password', 5))
-      // setErrorMessage('Wrong username or password')
-      // setTimeout(() => {
-      //   setErrorMessage(null)
-      // }, 5000)
+      console.warn(exception)
     }
   }
   //for testing purposes
@@ -97,8 +77,7 @@ const App = () => {
       <div>
         <button className="button" onClick={logOut}>Log out</button>
       </div>
-      <Notification message={errorMessage} />
-      {/* <Notification /> */}
+      <Notification />
       <ToastContainer position="top-right"
         autoClose={5000}
         hideProgressBar={false}
@@ -108,26 +87,12 @@ const App = () => {
       />
       <Togglable buttonLabel='Create new Blog'>
         <BlogForm
-          setBlogs={setBlogs}
-          blogs={blogs}
-          setErrorMessage={setErrorMessage}
           onSubmit={onSubmit}
         />
       </Togglable>
-      <h1>Blogs</h1>
-      <ul className="blogs">
-        {blogs.sort((prevBlog, nextBlog) => nextBlog.likes - prevBlog.likes).map(blog =>
-          <Blog
-            key={blog.id}
-            userId={user.id}
-            blog={blog}
-            setBlogs={setBlogs}
-            blogs={blogs}
-            setErrorMessage={setErrorMessage}
-            onLikeClick={handleLike}
-          />
-        )}
-      </ul>
+      <BlogList
+        onLikeClick={handleLike}
+      />
       <Footer />
     </>
   )

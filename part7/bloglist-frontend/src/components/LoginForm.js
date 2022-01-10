@@ -8,6 +8,8 @@ const LoginForm = ({
   username,
   password
 }) => {
+  // const [username, setUsername] = useState('')
+  // const [password, setPassword] = useState('')
   return (
     <div>
       <form onSubmit={handleSubmit}>
