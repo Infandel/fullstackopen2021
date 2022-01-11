@@ -1,9 +1,10 @@
 import React from 'react'
 import Blog from './Blog'
+import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 
 
-const BlogList = ({ userId, onLikeClick }) => {
+const BlogList = ({ onLikeClick }) => {
   const blogs = useSelector(state => state.blogs)
 
   return (
@@ -13,7 +14,6 @@ const BlogList = ({ userId, onLikeClick }) => {
         {blogs.map(blog =>
           <Blog
             key={blog.id}
-            userId={userId}
             blog={blog}
             blogs={blogs}
             onLikeClick={onLikeClick}
@@ -22,6 +22,13 @@ const BlogList = ({ userId, onLikeClick }) => {
       </ul>
     </div>
   )
+}
+
+BlogList.propTypes = {
+  onLikeClick: PropTypes.func.isRequired,
+  // handlePasswordChange: PropTypes.func.isRequired,
+  // username: PropTypes.string.isRequired,
+  // password: PropTypes.string.isRequired
 }
 
 export default BlogList

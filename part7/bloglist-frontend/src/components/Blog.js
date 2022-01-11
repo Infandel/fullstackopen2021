@@ -68,9 +68,9 @@ const Blog = ({ blog, blogs, onLikeClick }) => {
 }
 
 Blog.propTypes = {
-  blogs: PropTypes.array.isRequired,
-  blog: PropTypes.object,
-  // userId: PropTypes.string.isRequired
+  blogs: PropTypes.arrayOf(PropTypes.object),
+  blog: PropTypes.objectOf(PropTypes.any).isRequired,
+  onLikeClick: PropTypes.func.isRequired,
 }
 
 export default Blog
