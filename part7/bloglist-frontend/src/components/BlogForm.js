@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 import { createBlog } from '../reducers/blogReducer'
+import { showNotification } from '../reducers/notificationReducer'
 
 const BlogForm = ({ toggleVisibility, onSubmit }) => {
 
@@ -30,8 +31,10 @@ const BlogForm = ({ toggleVisibility, onSubmit }) => {
       url: newURL,
     }
     onSubmit(blogObject)
-    if (blogObject.newTitle.length > 5) {
+    if (blogObject.title.length > 5) {
       dispatch(createBlog(blogObject))
+    } else {
+      dispatch(showNotification('Title should be bigger than 5 symbols', 5))
     }
     setNewTitle('')
     setNewAuthor('')

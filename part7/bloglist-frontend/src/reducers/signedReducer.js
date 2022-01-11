@@ -34,7 +34,7 @@ export const login = (username, password) => {
         window.localStorage.setItem(
           'loggedBlogappUser', JSON.stringify(signedUser)
         )
-        await blogService.setToken(signedUser.token)
+        blogService.setToken(signedUser.token)
         dispatch ({
           type: 'SET_USER',
           data: signedUser

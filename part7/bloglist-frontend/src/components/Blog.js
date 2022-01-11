@@ -19,7 +19,6 @@ const Blog = ({ blog, blogs, onLikeClick }) => {
   const [visible, setVisible] = useState(false)
   const dispatch = useDispatch()
   const user = useSelector(state => state.user)
-  console.log(user)
 
   const hideWhenVisible = { display: visible ? 'none' : '' }
   const showWhenVisible = { display: visible ? '' : 'none' }

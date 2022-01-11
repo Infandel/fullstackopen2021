@@ -21,15 +21,6 @@ const App = () => {
     dispatch(initializeBlogs())
   }, [dispatch])
 
-  // useEffect(() => {
-  //   const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
-  //   if (loggedUserJSON) {
-  //     const user = JSON.parse(loggedUserJSON)
-  //     setUser(user)
-  //     blogService.setToken(user.token)
-  //   }
-  // }, [])
-
   const logOut = () => {
     dispatch(logout())
   }

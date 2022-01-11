@@ -1,5 +1,6 @@
 import blogService from '../services/blogs'
 import { showNotification } from './notificationReducer'
+import { logout } from './signedReducer'
 import { toast } from 'react-toastify'
 
 const blogReducer = (state = [], action) => {
@@ -43,6 +44,7 @@ export const createBlog = content => {
       })
     } else {
       dispatch(showNotification('Something went wrong with input', 5))
+      dispatch(logout())
     }
   }
 }
@@ -67,6 +69,7 @@ export const makingLike = (id, blogs) => {
         })
       } else {
         dispatch(showNotification('Something went wrong with increasing the likes', 5))
+        dispatch(logout())
       }
     } catch (e) {
       console.warn(e)
@@ -87,6 +90,7 @@ export const deleteBlog = (id) => {
     } catch (e) {
       console.warn(e)
       dispatch(showNotification('Something went wrong with increasing the likes', 5))
+      dispatch(logout())
     }
   }
 }
