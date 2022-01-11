@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import { makingLike, deleteBlog } from '../reducers/blogReducer'
+import { useParams } from 'react-router-dom'
 
-const Blog = ({ blog, blogs, onLikeClick }) => {
+const Blog = () => {
 
   const blogStyle = {
     padding: '10px',
@@ -16,22 +17,13 @@ const Blog = ({ blog, blogs, onLikeClick }) => {
     fontFamily: 'Arial, Helvetica, sans-serif',
   }
 
-  const [visible, setVisible] = useState(false)
   const dispatch = useDispatch()
+  const blogId = useParams().id
   const user = useSelector(state => state.user)
-
-  const hideWhenVisible = { display: visible ? 'none' : '' }
-  const showWhenVisible = { display: visible ? '' : 'none' }
-  // Comparing the IDs of creator and current user to display
-  // remove button
-  const isRemovable = { display: user.id === blog.user.id ? '' : 'none' }
-
-  const toggleVisibility = () => {
-    setVisible(!visible)
-  }
+  const blogs = useSelector(state => state.blogs)
+  const blog = blogs.find(b => b.id === blogId)
 
   const increaseLike = (event) => {
-    onLikeClick()
     event.preventDefault()
     dispatch(makingLike(blog.id, blogs))
   }
@@ -42,23 +34,26 @@ const Blog = ({ blog, blogs, onLikeClick }) => {
     }
   }
 
+  if (!blog) {
+    return null
+  }
+
+  // Comparing the IDs of creator and current user to display
+  // remove button
+  const isRemovable = { display: user.id === blog.user.id ? '' : 'none' }
+
   return (
     <li style={blogStyle} className="blog">
-      <div style={hideWhenVisible} className="initialBlog">
-        {blog.title} by {blog.author}
-        <button onClick={toggleVisibility} className="button small">View</button>
-      </div>
-      <div style={showWhenVisible} className="expandedBlog">
+      <div className="expandedBlog">
         <div>
-          {blog.title} by {blog.author}
-          <button onClick={toggleVisibility} className="button small">Hide</button>
+          <h2>{blog.title} by {blog.author}</h2>
         </div>
-        <div>{blog.url}</div>
+        <div><a href={blog.url}>{blog.url}</a></div>
         <div>
           {blog.likes}
           <button onClick={increaseLike} className="button small">Like</button>
         </div>
-        <div>{blog.user.name}</div>
+        <div>added by {blog.user.name}</div>
         <div style={isRemovable}>
           <button onClick={removeBlog} className="button small danger">Remove</button>
         </div>
@@ -69,8 +64,7 @@ const Blog = ({ blog, blogs, onLikeClick }) => {
 
 Blog.propTypes = {
   blogs: PropTypes.arrayOf(PropTypes.object),
-  blog: PropTypes.objectOf(PropTypes.any).isRequired,
-  onLikeClick: PropTypes.func.isRequired,
+  blog: PropTypes.objectOf(PropTypes.any),
 }
 
 export default Blog

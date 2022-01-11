@@ -3,9 +3,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Switch, Route } from 'react-router-dom'
 import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUsers } from './reducers/userReducer'
-import { logout } from './reducers/signedReducer'
+import NavBar from './components/NavBar'
 import Users from './components/Users'
 import User from './components/User'
+import Blog from './components/Blog'
 import BlogList from './components/BlogList'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
@@ -26,10 +27,6 @@ const App = () => {
   useEffect(() => {
     dispatch(initializeUsers())
   }, [dispatch])
-
-  const logOut = () => {
-    dispatch(logout())
-  }
 
   //for testing purposes
   const handleLike = () => {
@@ -52,12 +49,7 @@ const App = () => {
 
   return (
     <>
-      <div className="user">
-        {user.name} logged-in
-      </div>
-      <div>
-        <button className="button" onClick={logOut}>Log out</button>
-      </div>
+      <NavBar />
       <Notification />
       <ToastContainer position="top-right"
         autoClose={5000}
@@ -67,6 +59,9 @@ const App = () => {
         pauseOnFocusLoss draggable pauseOnHover
       />
       <Switch>
+        <Route path="/blogs/:id">
+          <Blog />
+        </Route>
         <Route path="/users/:id">
           <User />
         </Route>

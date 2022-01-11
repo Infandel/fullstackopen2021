@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 const User = () => {
   const users = useSelector(state => state.users)
   const id = useParams().id
-  const user = users.find(n => n.id === id)
+  const user = users.find(u => u.id === id)
   if (!user) {
     return null
   }
@@ -13,7 +13,7 @@ const User = () => {
     <>
       <h2>{user.username}</h2>
       <h4>Added blogs</h4>
-      <ul>
+      <ul className='blogs'>
         {user.blogs.map(blog =>
           <li key={blog.id}>
             {blog.title}
