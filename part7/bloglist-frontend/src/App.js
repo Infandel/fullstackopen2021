@@ -29,10 +29,6 @@ const App = () => {
   }, [dispatch])
 
   //for testing purposes
-  const handleLike = () => {
-    console.log('toasty')
-  }
-  //for testing purposes
   const onSubmit = () => {
     console.log('submitted')
   }
@@ -72,7 +68,7 @@ const App = () => {
           <Togglable buttonLabel='Create new Blog'>
             <BlogForm onSubmit={onSubmit} />
           </Togglable>
-          <BlogList onLikeClick={handleLike} />
+          <BlogList />
         </Route>
       </Switch>
       <Footer />

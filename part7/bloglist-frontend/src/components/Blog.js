@@ -3,12 +3,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import { makingLike, deleteBlog } from '../reducers/blogReducer'
 import { useParams } from 'react-router-dom'
+import Comments from './Comments'
 
 const Blog = () => {
 
   const blogStyle = {
     padding: '10px',
-    margin: '5px',
+    margin: '0',
     border: 'solid',
     borderWidth: 1,
     marginBottom: 5,
@@ -22,6 +23,7 @@ const Blog = () => {
   const user = useSelector(state => state.user)
   const blogs = useSelector(state => state.blogs)
   const blog = blogs.find(b => b.id === blogId)
+
 
   const increaseLike = (event) => {
     event.preventDefault()
@@ -40,7 +42,7 @@ const Blog = () => {
 
   // Comparing the IDs of creator and current user to display
   // remove button
-  const isRemovable = { display: user.id === blog.user.id ? '' : 'none' }
+  const isRemovable = { display: user.id === blog.user ? '' : 'none' }
 
   return (
     <li style={blogStyle} className="blog">
@@ -58,6 +60,7 @@ const Blog = () => {
           <button onClick={removeBlog} className="button small danger">Remove</button>
         </div>
       </div>
+      <Comments blog={blog} />
     </li>
   )
 }

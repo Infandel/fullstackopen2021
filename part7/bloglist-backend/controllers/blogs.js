@@ -1,11 +1,12 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
+const Comment = require('../models/comment')
 const middleware = require('../utils/middleware')
 const mongoose = require('mongoose')
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog
-    .find({}).populate('user', { username: 1, name: 1 })
+    .find({}).populate('comments', { content: 1 })
   response.json(blogs)
 })
 
@@ -22,6 +23,7 @@ blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
     url: body.url,
     likes: body.likes || 0,
     user: user._id,
+    comments: []
   })
 
   if (!body.url && !body.title) {
@@ -35,12 +37,32 @@ blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
   }
 })
 
+blogsRouter.post('/:id/comments', middleware.userExtractor, async (request, response) => {
+  const body = request.body
+  if (!request.token || !request.decodedToken.id) {
+    response.status(401).json({ error: 'token missing or invalid' })
+  }
+  const comment = new Comment({
+    content: body.content,
+  })
+
+  const savedComment = await comment.save()
+
+  const blogWithNewComment = await (await Blog.findByIdAndUpdate(request.params.id, { $push: { comments: savedComment } }, { new: true })).populate('comments')
+  if (blogWithNewComment) {
+    console.log(blogWithNewComment)
+    response.json(blogWithNewComment)
+  } else {
+    response.status(404).end()
+  }
+})
+
 blogsRouter.get('/:id', async (request, response) => {
   const blog = await Blog.findById(request.params.id)
   if (blog) {
     response.json(blog)
   } else {
-    response.status(404).end()
+    response.status(404).json({ error: 'failed on adding new comment' })
   }
 })
 
@@ -81,7 +103,7 @@ blogsRouter.put('/:id', middleware.userExtractor, async (request, response) => {
     likes: body.likes || 0,
     user: body.user
   }
-  const updatedBlog = await (await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })).populate('user')
+  const updatedBlog = await (await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })).populate('comments')
   if (updatedBlog) {
     response.json(updatedBlog)
   } else {

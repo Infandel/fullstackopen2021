@@ -11,6 +11,8 @@ const blogReducer = (state = [], action) => {
       .sort((prevBlog, curBlog) => curBlog.likes - prevBlog.likes)
   case 'NEW_BLOG':
     return [...state, action.data]
+  case 'NEW_COMMENT':
+    return state.map(blog => blog.id !== action.data.blogId ? blog : action.data.blogWithNewComment)
   case 'INIT_BLOGS':
     return action.data.sort((prevBlog, curBlog) => curBlog.likes - prevBlog.likes)
   case 'DELETE_BLOG':
@@ -45,6 +47,25 @@ export const createBlog = content => {
     } else {
       dispatch(showNotification('Something went wrong with input', 5))
       dispatch(logout())
+    }
+  }
+}
+
+export const createComment = (blogId, content) => {
+  return async dispatch => {
+    const blogWithNewComment = await blogService.createComment(blogId, content)
+    if (blogWithNewComment) {
+      console.log('updated', blogWithNewComment)
+      dispatch({
+        type: 'NEW_COMMENT',
+        data: {
+          blogWithNewComment,
+          blogId
+        }
+      })
+    } else {
+      dispatch(showNotification(`${blogId}`, 5))
+      // dispatch(logout())
     }
   }
 }
