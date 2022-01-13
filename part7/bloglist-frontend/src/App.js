@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Switch, Route } from 'react-router-dom'
+import Container from '@material-ui/core/Container'
 import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUsers } from './reducers/userReducer'
 import NavBar from './components/NavBar'
@@ -44,7 +45,7 @@ const App = () => {
   }
 
   return (
-    <>
+    <Container>
       <NavBar />
       <Notification />
       <ToastContainer position="top-right"
@@ -72,7 +73,7 @@ const App = () => {
         </Route>
       </Switch>
       <Footer />
-    </>
+    </Container>
   )
 }
 

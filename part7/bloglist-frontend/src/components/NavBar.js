@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../reducers/signedReducer'
 import { Link } from 'react-router-dom'
+import { Button } from '@material-ui/core'
 
 const NavBar = () => {
   const navBarStyle = {
@@ -17,6 +18,8 @@ const NavBar = () => {
 
   const linksStyle = {
     textDecoration: 'none',
+    fontSize: '1.5rem',
+    margin: '20px 15px'
   }
 
   const dispatch = useDispatch()
@@ -28,15 +31,15 @@ const NavBar = () => {
 
   return (
     <div style={navBarStyle}>
-      <div style={{ display: 'inline-flex', alignItems:'center' }}>
-        <Link className="user" style={linksStyle} to={'/blogs/'}>Blogs</Link>
-        <Link className="user" style={linksStyle} to={'/users/'}>Users</Link>
+      <div style={{ display: 'inline-flex', alignItems:'center', }}>
+        <Link className="button" style={linksStyle} to={'/blogs/'}>Blogs</Link>
+        <Link className="button" style={linksStyle} to={'/users/'}>Users</Link>
       </div>
       <div style={{ marginLeft: 'auto', marginRight: '10px', display: 'flex', alignItems: 'center' }}>
         <div className="user">
           {user.name} logged-in
         </div>
-        <button className="button" onClick={logOut}>Log out</button>
+        <Button variant="contained" color="primary" style={linksStyle} onClick={logOut}>Log out</Button>
       </div>
     </div>
   )

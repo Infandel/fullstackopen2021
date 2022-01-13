@@ -4,6 +4,8 @@ import PropTypes from 'prop-types'
 import { makingLike, deleteBlog } from '../reducers/blogReducer'
 import { useParams } from 'react-router-dom'
 import Comments from './Comments'
+import { Button } from '@material-ui/core'
+
 
 const Blog = () => {
 
@@ -15,7 +17,6 @@ const Blog = () => {
     marginBottom: 5,
     borderRadius: '10px',
     boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
-    fontFamily: 'Arial, Helvetica, sans-serif',
   }
 
   const dispatch = useDispatch()
@@ -46,18 +47,21 @@ const Blog = () => {
 
   return (
     <li style={blogStyle} className="blog">
-      <div className="expandedBlog">
+      <div>
         <div>
           <h2>{blog.title} by {blog.author}</h2>
         </div>
         <div><a href={blog.url}>{blog.url}</a></div>
-        <div>
+        <br />
+        <div style={{ fontSize: '1.5rem', marginLeft:'17px', }}>
           {blog.likes}
-          <button onClick={increaseLike} className="button small">Like</button>
         </div>
-        <div>added by {blog.user.name}</div>
+        <div>
+          <Button onClick={increaseLike} variant="contained" color="primary">Like</Button>
+        </div>
+        <br />
         <div style={isRemovable}>
-          <button onClick={removeBlog} className="button small danger">Remove</button>
+          <Button onClick={removeBlog} variant="contained" color="secondary">Remove</Button>
         </div>
       </div>
       <Comments blog={blog} />

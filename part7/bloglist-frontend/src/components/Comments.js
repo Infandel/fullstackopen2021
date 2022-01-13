@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
 import { createComment } from '../reducers/blogReducer'
+import { TextField } from '@material-ui/core'
 
 const Comments = ({ blog }) => {
   const dispatch = useDispatch()
@@ -20,19 +21,22 @@ const Comments = ({ blog }) => {
       console.warn(exception)
     }
   }
-  if (!blog.comments[0].id) {
+  if (!blog.comments) {
     return null
   }
   return (
     <div>
       <h3>Comments</h3>
       <form onSubmit={addComment}>
-        <input
+        <TextField
+          label='comment'
           type="text"
           value={newComment}
           onChange={({ target }) => setNewComment(target.value)}
         />
-        <button type="submit" className="button">add comment</button>
+        <div>
+          <button type="submit" className="button">add comment</button>
+        </div>
       </form>
       <ul className="blogs">
         {blog.comments.map(comment =>
