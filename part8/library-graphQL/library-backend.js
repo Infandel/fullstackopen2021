@@ -158,9 +158,6 @@ const resolvers = {
       })
       return counter
     }
-    // name: (root) => root.name,
-    // born: (root) => root.born,
-    // id: (root) => root.id
   },
   Book: {
   },
@@ -168,7 +165,8 @@ const resolvers = {
     addBook: (root, args) => {
       const book = { ...args, id: uuid() }
       books = books.concat(book)
-      if (!authors.includes(book.author)) {
+
+      if (authors.filter(a => a.name === book.author).length === 0) {
         const author = { name: book.author, id: uuid() }
         authors = authors.concat(author)
       }
