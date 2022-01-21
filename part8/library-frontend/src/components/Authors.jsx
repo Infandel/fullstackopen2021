@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client'
 import { ALL_AUTHORS } from '../queries'
 import BirthYearForm from './BirthYearForm'
 
-const Authors = ({ show, setError }) => {
+const Authors = ({ show, setError, token }) => {
   const { loading, data } = useQuery(ALL_AUTHORS, {
     fetchPolicy:"cache-and-network"
   })
@@ -40,7 +40,7 @@ const Authors = ({ show, setError }) => {
           )}
         </tbody>
       </table>
-      <BirthYearForm setError={setError} data={data} />
+      <BirthYearForm setError={setError} data={data} token={token} />
     </div>
   )
 }

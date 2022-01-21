@@ -4,13 +4,14 @@ import Select from 'react-select';
 
 import { EDIT_AUTHOR } from '../queries'
 
-const BirthYearForm = ({ setError, data }) => {
+const BirthYearForm = ({ setError, data, token }) => {
   const [name, setName] = useState('')
   const [setBornTo, setBorn] = useState('')
 
   const [ changeAuthor, result ] = useMutation(EDIT_AUTHOR, {
+    errorPolicy: 'all',
     onError: (error) => {
-      setError(error.message)
+      setError(error.networkError.result.errors[0].message)
     }
   })
 
@@ -32,6 +33,10 @@ const BirthYearForm = ({ setError, data }) => {
       setError('author was not found')
     }
   }, [result.data]) // eslint-disable-line
+
+  if (!token) {
+    return null
+  }
 
   return (
     <div>
