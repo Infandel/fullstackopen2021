@@ -2,24 +2,25 @@ import React, { useState, useEffect } from 'react'
 import { useQuery } from '@apollo/client'
 import { ALL_BOOKS } from '../queries'
 
-const Books = (props) => {
+const Books = ({ show, loadRecBooks }) => {
   const [genres, setGenres] = useState([])
   const [genreHeader, setGenreHeader] = useState('')
   const [books, setBooks] = useState([])
   const { data, loading } = useQuery(ALL_BOOKS, {
-    fetchPolicy:"cache-and-network"
+    fetchPolicy: "cache-and-network",
+    nextFetchPolicy: "cache-first",
   })
 
   useEffect(() => {
     const allGenres = []
     if (data) {
-      data.allBooks.forEach(a => {
-        allGenres.push(a.genres)
+      data.allBooks.forEach(b => {
+        allGenres.push(b.genres)
       })
       const oiSet = new Set(allGenres.flat(2))
       setGenres(Array.from(oiSet))
     }
-  }, [data, props.show])
+  }, [data, show])
 
   const setGenre = (genre) => {
     if (genre) {
@@ -37,7 +38,7 @@ const Books = (props) => {
     return genre ? setGenreHeader(genre) : setGenreHeader('')
   }
 
-  if (!props.show) {
+  if (!show) {
     return null
   }
 
@@ -49,7 +50,7 @@ const Books = (props) => {
     <div>
       <h2>books</h2>
       {genreHeader !== '' ?
-        <p>in genre {genreHeader}</p>
+        <p>in genre <strong>{genreHeader}</strong></p>
         : null
       }
       <table>

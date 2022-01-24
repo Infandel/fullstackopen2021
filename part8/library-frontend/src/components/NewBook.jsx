@@ -10,10 +10,36 @@ const NewBook = ({ show, setError }) => {
   const [genres, setGenres] = useState([])
 
   const [ createBook ] = useMutation(CREATE_BOOK, {
-    refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }],
+    // refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }],
     errorPolicy: 'all',
     onError: (error) => {
       setError(error.networkError.result.errors[0].message)
+    },
+    update: (store, response) => {
+      try {
+        const booksInStore = store.readQuery({ query: ALL_BOOKS })
+        store.writeQuery({
+          query: ALL_BOOKS,
+          data: {
+            ...booksInStore,
+            allBooks: [ ...booksInStore.allBooks, response.data.addBook ]
+          }
+        })
+      } catch(error) {
+        console.error(error);
+      }
+      try {
+        const authorsInStore = store.readQuery({ query: ALL_AUTHORS })
+        store.writeQuery({
+          query: ALL_AUTHORS,
+          data: {
+            ...authorsInStore,
+            allAuthors: [ ...authorsInStore.allAuthors, response.data.addBook.author ]
+          }
+        })
+      } catch(error) {
+        console.error(error);
+      }
     }
   })
 
@@ -23,7 +49,6 @@ const NewBook = ({ show, setError }) => {
 
   const submit = async (event) => {
     event.preventDefault()
-
     createBook({ variables: { title, author, published, genres } })
 
     console.log('add book...')

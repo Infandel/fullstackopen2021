@@ -6,7 +6,8 @@ import BirthYearForm from './BirthYearForm'
 
 const Authors = ({ show, setError, token }) => {
   const { loading, data } = useQuery(ALL_AUTHORS, {
-    fetchPolicy:"cache-and-network"
+    fetchPolicy: "cache-and-network",
+    nextFetchPolicy: "cache-first",
   })
 
   if (!show) {

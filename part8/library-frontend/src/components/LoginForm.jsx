@@ -2,23 +2,26 @@ import React, { useState, useEffect } from 'react'
 import { useMutation } from '@apollo/client'
 import { LOGIN } from '../queries'
 
-const LoginForm = ({ setError, setToken, show, setPage }) => {
+const LoginForm = ({ setError, setToken, show, setPage, setFavoriteGenre }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const [ login, result ] = useMutation(LOGIN, {
+  const [ login, { data } ] = useMutation(LOGIN, {
     onError: (error) => {
-      setError(error.graphQLErrors[0].message)
+      setError(error.networkError.result.errors[0].message)
     }
   })
 
   useEffect(() => {
-    if ( result.data ) {
-      const token = result.data.login.value
+    if ( data ) {
+      const token = data.login.value
+      const favoriteGenre = data.login.favoriteGenre
       setToken(token)
+      setFavoriteGenre(favoriteGenre)
       localStorage.setItem('library-user-token', token)
+      localStorage.setItem('library-user-fav-genre', favoriteGenre)
     }
-  }, [result.data]) // eslint-disable-line
+  }, [data]) // eslint-disable-line
 
   const submit = async (event) => {
     event.preventDefault()

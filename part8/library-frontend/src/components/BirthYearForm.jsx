@@ -11,7 +11,9 @@ const BirthYearForm = ({ setError, data, token }) => {
   const [ changeAuthor, result ] = useMutation(EDIT_AUTHOR, {
     errorPolicy: 'all',
     onError: (error) => {
-      setError(error.networkError.result.errors[0].message)
+      error.length === 1 ?
+      setError(error.networkError?.result?.errors[0].message) :
+      setError(error.graphQLErrors[0].message)
     }
   })
 

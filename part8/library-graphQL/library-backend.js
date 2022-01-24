@@ -25,15 +25,16 @@ const typeDefs = gql`
     id: ID!
   }
 
-  type Token {
+  type TokenAndGenre {
     value: String!
+    favoriteGenre: String!
   }
 
   type Author {
     name: String!
-    id: ID
+    id: ID!
     born: Int
-    bookCount: Int
+    bookCount: Int!
   }
 
   type Book {
@@ -74,7 +75,7 @@ const typeDefs = gql`
     login(
       username: String!
       password: String!
-    ): Token
+    ): TokenAndGenre
   }
 `
 
@@ -142,7 +143,8 @@ const resolvers = {
           invalidArgs: args,
         })
       }
-      return book
+      const savedBook = await book.populate('author').execPopulate()
+      return savedBook
     },
     editAuthor: async (root, args, { currentUser }) => {
       const filter = { name: args.name }
@@ -184,7 +186,10 @@ const resolvers = {
         id: user._id,
       }
 
-      return { value: jwt.sign(userForToken, JWT_SECRET) }
+      return {
+        value: jwt.sign(userForToken, JWT_SECRET),
+        favoriteGenre: user.favoriteGenre
+      }
     },
   }
 }
