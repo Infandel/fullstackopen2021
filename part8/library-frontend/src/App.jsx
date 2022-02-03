@@ -7,6 +7,8 @@ import LoginForm from './components/LoginForm'
 import Recommend from './components/Recommend'
 import { useApolloClient, useLazyQuery } from '@apollo/client'
 import { ALL_BOOKS } from './queries'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
@@ -111,6 +113,13 @@ const App = () => {
       </div>
 
       <Notify errorMessage={errorMessage} />
+      <ToastContainer position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick rtl={false}
+        pauseOnFocusLoss draggable pauseOnHover
+      />
       <Authors
         show={page === 'authors'}
         setError={notify}
@@ -119,12 +128,13 @@ const App = () => {
 
       <Books
         show={page === 'books'}
-        setErrorMessage={setErrorMessage}
+        setError={notify}
       />
 
       <NewBook
         show={page === 'add'}
         setError={notify}
+        client={client}
       />
 
       <Recommend

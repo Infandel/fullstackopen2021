@@ -8,13 +8,16 @@ const Authors = ({ show, setError, token }) => {
   const { loading, data } = useQuery(ALL_AUTHORS, {
     fetchPolicy: "cache-and-network",
     nextFetchPolicy: "cache-first",
+    onError: (error) => {
+      setError(error.networkError?.result?.errors[0].message)
+    }
   })
 
   if (!show) {
     return null
   }
 
-  if (loading) {
+  if (loading || !data) {
     return <div>loading...</div>
   }
 

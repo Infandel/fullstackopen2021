@@ -2,13 +2,18 @@ import React, { useState, useEffect } from 'react'
 import { useQuery } from '@apollo/client'
 import { ALL_BOOKS } from '../queries'
 
-const Books = ({ show, loadRecBooks }) => {
+const Books = ({ show, setError }) => {
   const [genres, setGenres] = useState([])
   const [genreHeader, setGenreHeader] = useState('')
   const [books, setBooks] = useState([])
   const { data, loading } = useQuery(ALL_BOOKS, {
     fetchPolicy: "cache-and-network",
     nextFetchPolicy: "cache-first",
+    onError: (error) => {
+      error.length === 1 ?
+      setError(error.networkError?.result?.errors[0].message) :
+      setError(error.graphQLErrors[0].message)
+    }
   })
 
   useEffect(() => {

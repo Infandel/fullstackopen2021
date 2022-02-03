@@ -21,7 +21,6 @@ const BirthYearForm = ({ setError, data, token }) => {
     event.preventDefault()
     changeAuthor({ variables: { name, setBornTo } })
 
-    setName('')
     setBorn('')
   }
 
