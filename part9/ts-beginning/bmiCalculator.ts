@@ -1,12 +1,10 @@
-interface getYourBMI {
-  height: number,
-  weight: number
-}
+import { yourBMIObject } from './interfaces';
 
-const calculateBmi = (height: number, weight: number) : string => {
-  if (height === 0) return 'Please input actual height in centimeteres'
-  const heightInMeters = height * 0.01
-  const index = Number((weight / heightInMeters ** 2).toFixed(1))
+export const calculateBmi = (height: number, weight: number) : string => {
+  if (height === 0) return 'Height can not be equal to the 0!';
+  if (isNaN(height) || isNaN(weight)) throw new Error ('Please provide numbers as parameters');
+  const heightInMeters = height * 0.01;
+  const index = Number((weight / heightInMeters ** 2).toFixed(1));
   if (index < 16) {
     return 'Underweight (Severe thinness)';
   } else if (index <= 16.9 && index >= 16) {
@@ -23,10 +21,10 @@ const calculateBmi = (height: number, weight: number) : string => {
     return 'Obese (Class II)';
   } else if (index >= 40.0) {
     return 'Obese (Class III)';
-  } else throw new Error ('Had not managed to calculate BMI')
-}
+  } else throw new Error ('Had not managed to calculate BMI');
+};
 
-const parseArgumentsHere = (args: Array<string>): getYourBMI => {
+const parseArgumentsHere = (args: Array<string>): yourBMIObject => {
   if (args.length < 4) throw new Error('Not enough arguments');
   if (args.length > 4) throw new Error('Too many arguments');
 
@@ -34,17 +32,17 @@ const parseArgumentsHere = (args: Array<string>): getYourBMI => {
     return {
       height: Number(args[2]),
       weight: Number(args[3])
-    }
+    };
   } else {
     throw new Error('Provided values were not numbers!');
   }
-}
+};
 
 try {
   const { height, weight } = parseArgumentsHere(process.argv);
   console.log(calculateBmi(height, weight));
 } catch (error: unknown) {
-  let errorMessage = 'Something bad happened.'
+  let errorMessage = 'Something bad happened.';
   if (error instanceof Error) {
     errorMessage += ' Error: ' + error.message;
   }
