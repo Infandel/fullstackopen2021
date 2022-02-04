@@ -1,4 +1,4 @@
-import { yourBMIObject } from './interfaces';
+import { BMIObject } from './interfaces';
 
 export const calculateBmi = (height: number, weight: number) : string => {
   if (height === 0) return 'Height can not be equal to the 0!';
@@ -24,7 +24,7 @@ export const calculateBmi = (height: number, weight: number) : string => {
   } else throw new Error ('Had not managed to calculate BMI');
 };
 
-const parseArgumentsHere = (args: Array<string>): yourBMIObject => {
+const parseArgumentsHere = (args: Array<string>): BMIObject => {
   if (args.length < 4) throw new Error('Not enough arguments');
   if (args.length > 4) throw new Error('Too many arguments');
 

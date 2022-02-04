@@ -1,19 +1,18 @@
 import express from 'express';
 import { calculateBmi } from './bmiCalculator';
 import { calculateExercises } from './exerciseCalculator';
-import { getGoalAndArray } from './interfaces';
+import { GoalAndArray } from './interfaces';
 const app = express();
 
 app.use(express.json());
 
 app.post('/exercises', (request, response) => {
-  const { daily_exercises, target } = request.body as getGoalAndArray;
+  const { daily_exercises, target } = request.body as GoalAndArray;
   if (!daily_exercises || !target) {
     response.json({ error: "parameters missing" });
   }
   if (Array.isArray(daily_exercises) && !isNaN(target)) {
     const calcsResult = calculateExercises(daily_exercises, target);
-    console.log(calcsResult);
     response.json(calcsResult);
   } else {
     response.json({ error: "malformatted parameters" });

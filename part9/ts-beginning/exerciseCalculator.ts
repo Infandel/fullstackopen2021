@@ -1,6 +1,6 @@
-import { Result, getGoalAndArray } from './interfaces';
+import { Result, GoalAndArray } from './interfaces';
 
-const parseArguments = (args: Array<string>) : getGoalAndArray => {
+const parseArguments = (args: Array<string>) : GoalAndArray => {
   if (args.length < 4) throw new Error('Not enough arguments');
   const daily_exercises = args.slice(3).map(number => {
     const intHours = Number(number);

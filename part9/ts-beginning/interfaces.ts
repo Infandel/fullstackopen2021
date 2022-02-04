@@ -1,4 +1,4 @@
-export interface yourBMIObject {
+export interface BMIObject {
   height: number,
   weight: number
 }
@@ -13,7 +13,7 @@ export interface Result {
   average: number
 }
 
-export interface getGoalAndArray {
+export interface GoalAndArray {
   daily_exercises: Array<number>,
   target: number
 }
