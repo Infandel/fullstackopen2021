@@ -1,13 +1,14 @@
-import { NewPatientEntry, Gender } from './types';
+import { NewPatientEntry, Gender, Entry } from './types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const toNewPatientEntry = (object: any): NewPatientEntry => {
-  const newEntry: NewPatientEntry = {
+  const newEntry = {
     name: isStringValueExists(object.name, 'name'),
     dateOfBirth: parseDate(object.dateOfBirth),
     gender: parseGender(object.gender),
     ssn: isStringValueExists(object.ssn, 'SSN'),
-    occupation: isStringValueExists(object.occupation, 'occupation')
+    occupation: isStringValueExists(object.occupation, 'occupation'),
+    entries: object.entries as Entry[] || new Array()
   };
 
   return newEntry;
