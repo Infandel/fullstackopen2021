@@ -1,24 +1,25 @@
 import React from 'react';
-import { Entry } from '../types';
-import { useStateValue } from "../state";
+import { HospitalEntry } from '../types';
+import { Card, Header, Icon, Segment } from 'semantic-ui-react';
 
-const HospitalSegment: React.FC<{ entry: Entry }> = ({ entry }) => {
-  const [{ diagnoses } ] = useStateValue();
+const HospitalSegment: React.FC<{ entry: HospitalEntry }> = ({ entry }) => {
   return (
-    <div>
-      <p>{entry.date} <i>{entry.description}</i></p>
-      <ul>
-        {entry.diagnosisCodes?.map(diCo => {
-          console.log(diagnoses[diCo].name);
-          return (
-            <li key={diCo}>
-              {diagnoses[diCo].code} {diagnoses[diCo].name}
-            </li>
-          );
-        }
-        )}
-      </ul>
-    </div>
+    <Segment>
+      <Header as='h3'>{entry.date} <Icon name='hospital' size="big" /></Header>
+      <i>{entry.description}</i>
+      {entry.discharge && (
+        <Card>
+          <Card.Content>
+            <Card.Header>Discharge</Card.Header>
+          </Card.Content>
+          <Card.Content>
+            {'Date: '}{entry.discharge?.date}
+            <br />
+            {'Criteria: '}{entry.discharge?.criteria}
+          </Card.Content>
+        </Card>
+      )}
+    </Segment>
   );
 };
 

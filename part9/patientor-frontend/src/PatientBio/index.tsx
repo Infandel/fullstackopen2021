@@ -3,7 +3,7 @@ import {
   useParams
 } from "react-router-dom";
 import { useStateValue } from "../state";
-import { Icon } from 'semantic-ui-react';
+import { Icon, Header } from 'semantic-ui-react';
 import { Patient, Entry } from "../types";
 import axios from 'axios';
 import { apiBaseUrl } from '../constants';
@@ -57,17 +57,16 @@ const PatientBio = () => {
   if (Object.keys(diagnoses).length === 0) {
     return null;
   }
-  console.log(currentPatient);
+
   return (
     <div>
       <h2>{currentPatient.name} {getCurrentGenderIcon(currentPatient.gender)}</h2>
       <p>ssn: {currentPatient.ssn}</p>
       <p>occupation: {currentPatient.occupation}</p>
-      <h3>Entries</h3>
+      {currentPatient.entries.length > 0 && <Header as='h3'>Entries</Header>}
         {currentPatient.entries?.map((entry : Entry) =>
           <EntryDetails key={entry.id} entry={entry} />
         )}
-      <p></p>
     </div>
   );
 };

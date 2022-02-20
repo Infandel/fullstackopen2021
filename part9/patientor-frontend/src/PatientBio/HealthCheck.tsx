@@ -1,6 +1,6 @@
 import React from 'react';
 import { HealthCheckEntry } from '../types';
-import { Icon, Container, Header, Segment,  } from 'semantic-ui-react';
+import { Icon,  Header, Segment,  } from 'semantic-ui-react';
 
 const HealthCheck: React.FC<{ entry: HealthCheckEntry }> = ({ entry }) => {
 
@@ -20,14 +20,12 @@ const HealthCheck: React.FC<{ entry: HealthCheckEntry }> = ({ entry }) => {
   };
 
   return (
-    <Container>
-      <Segment>
-        <Header as='h3'>{entry.date} <Icon name='doctor' size="big" /></Header>
-        <i>{entry.description}</i>
-        <br />
-        <Icon name='heart' size="small" color={healthRatingColor(entry.healthCheckRating)} />
-      </Segment>
-    </Container>
+    <Segment>
+      <Header as='h3'>{entry.date} <Icon name='doctor' size="big" /></Header>
+      <i>{entry.description}</i>
+      <br />
+      <Icon name='heart' size="small" color={healthRatingColor(entry.healthCheckRating)} />
+    </Segment>
   );
 };
 
